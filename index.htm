@@ -1,85 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>抽獎</title>
-<!-- 這裡是css部分 -->
-<style>
-#bg{
-width: 650px;
-height: 600px;
-margin: 0 auto;
-background: url(turntable-bg.jpg) no-repeat;
-position: relative;
-}
-img[src^="pointer"]{
-position: absolute;
-z-index: 10;
-top: 155px;
-left: 247px;
-}
-img[src^="turntable"]{
-position: absolute;
-z-index: 5;
-top: 60px;
-left: 116px;
-transition: all 4s;
-}
-</style>
-</head>
-<body>
-<!-- 這裡是HTML結構部分 -->
-<div id="bg">
-<img src="pointer.png" alt="pointer">
-<img src="turntable.png" alt="turntable">
-</div>
-<!-- 這裡是js部分 -->
-<script>
-var oPointer=document.getElementsByTagName("img")[0];
-var oTurntable=document.getElementsByTagName("img")[1];
-var cat=51.4;
-var num=0;
-var offOn=true;
-document.title="";
-oPointer.onclick=function(){
-if(offOn){
-oTurntable.style.transform="rotate(0deg)";
-offOn=!offOn;
-ratating();
-}
-}
-function ratating(){
-var timer=null;
-var rdm=0;
-clearInterval(timer);
-timer=setInterval(function(){
-if(Math.floor(rdm/360)<3){
-rdm=Math.floor(Math.random()*3600); 
-}else{
-oTurntable.style.transform="rotate(" + rdm + "deg)";
-clearInterval(timer);
-setTimeout(function(){
-offOn=!offOn;
-num=rdm%360;
-if(num<=cat*1){
-alert("4999元");
-}else if(num<=cat*2){
-alert("條50元");
-}else if(num<=cat*3){
-alert("10元");
-}else if(num<=cat*4){
-alert("5元");
-}else if(num<=cat*5){
-alert("免息服務");
-}else if(num<=cat*6){
-alert("提交白金");
-}else if(num<=cat*7){
-alert("未中獎");
-}
-},4000);
-} 
-},30); 
-}
-</script>
-</body>
-</html> 
+<html>
+  <head>
+    <title>Google Calendar API Quickstart</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <p>Google Calendar API Quickstart</p>
+
+    <!--Add buttons to initiate auth sequence and sign out-->
+    <button id="authorize_button" style="display: none;">Authorize</button>
+    <button id="signout_button" style="display: none;">Sign Out</button>
+
+    <pre id="content" style="white-space: pre-wrap;"></pre>
+
+    <script type="text/javascript">
+      // Client ID and API key from the Developer Console
+      var CLIENT_ID = '478714615002-qcdr8uufvs3f8qa02ocpcuqu84fi3f17.apps.googleusercontent.com';
+      var API_KEY = 'AIzaSyBUDmGjzmeSkTuAqYPYC3bsRmBysMn66_4';
+
+      // Array of API discovery doc URLs for APIs used by the quickstart
+      var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+
+      // Authorization scopes required by the API; multiple scopes can be
+      // included, separated by spaces.
+      var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+
+      var authorizeButton = document.getElementById('authorize_button');
+      var signoutButton = document.getElementById('signout_button');
+
+      /**
+       *  On load, called to load the auth2 library and API client library.
+       */
+      function handleClientLoad() {
+        gapi.load('client:auth2', initClient);
+      }
+
+      /**
+       *  Initializes the API client library and sets up sign-in state
+       *  listeners.
+       */
+      function initClient() {
+        gapi.client.init({
+          apiKey: API_KEY,
+          clientId: CLIENT_ID,
+          discoveryDocs: DISCOVERY_DOCS,
+          scope: SCOPES
+        }).then(function () {
+          // Listen for sign-in state changes.
+          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+          // Handle the initial sign-in state.
+          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+          authorizeButton.onclick = handleAuthClick;
+          signoutButton.onclick = handleSignoutClick;
+        }, function(error) {
+          appendPre(JSON.stringify(error, null, 2));
+        });
+      }
+
+      /**
+       *  Called when the signed in status changes, to update the UI
+       *  appropriately. After a sign-in, the API is called.
+       */
+      function updateSigninStatus(isSignedIn) {
+        if (isSignedIn) {
+          authorizeButton.style.display = 'none';
+          signoutButton.style.display = 'block';
+          listUpcomingEvents();
+        } else {
+          authorizeButton.style.display = 'block';
+          signoutButton.style.display = 'none';
+        }
+      }
+
+      /**
+       *  Sign in the user upon button click.
+       */
+      function handleAuthClick(event) {
+        gapi.auth2.getAuthInstance().signIn();
+      }
+
+      /**
+       *  Sign out the user upon button click.
+       */
+      function handleSignoutClick(event) {
+        gapi.auth2.getAuthInstance().signOut();
+      }
+
+      /**
+       * Append a pre element to the body containing the given message
+       * as its text node. Used to display the results of the API call.
+       *
+       * @param {string} message Text to be placed in pre element.
+       */
+      function appendPre(message) {
+        var pre = document.getElementById('content');
+        var textContent = document.createTextNode(message + '\n');
+        pre.appendChild(textContent);
+      }
+
+      /**
+       * Print the summary and start datetime/date of the next ten events in
+       * the authorized user's calendar. If no events are found an
+       * appropriate message is printed.
+       */
+      function listUpcomingEvents() {
+        gapi.client.calendar.events.list({
+          'calendarId': 'primary',
+          'timeMin': (new Date()).toISOString(),
+          'showDeleted': false,
+          'singleEvents': true,
+          'maxResults': 10,
+          'orderBy': 'startTime'
+        }).then(function(response) {
+          var events = response.result.items;
+          appendPre('Upcoming events:');
+
+          if (events.length > 0) {
+            for (i = 0; i < events.length; i++) {
+              var event = events[i];
+              var when = event.start.dateTime;
+              if (!when) {
+                when = event.start.date;
+              }
+              appendPre(event.summary + ' (' + when + ')')
+            }
+          } else {
+            appendPre('No upcoming events found.');
+          }
+        });
+      }
+
+    </script>
+
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+  </body>
+</html>
