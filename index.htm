@@ -19,8 +19,9 @@
 
     <script type="text/javascript">
       // Client ID and API key from the Developer Console
-      var CLIENT_ID = '907582575902-cj61g4ho1a1991obd0o9kejfciiqq2t6.apps.googleusercontent.com';
-      var API_KEY = 'AIzaSyBe0l0LjT6jgF6tmZzuHBxIGQpsBOUqkMI';
+      var CLIENT_ID = '142701978725-i036ql23qnh5qeit4jrcn9v7q7cc9j2f.apps.googleusercontent.com';
+      var API_KEY = 'AIzaSyCQN-ai7bDGaMbE3D_vBeWWBGbEEacrwyw';
+	  var CALENDAR_ID = '4kkpa1vfr1qtuh5p4esder1n5o@group.calendar.google.com';
 
       // Array of API discovery doc URLs for APIs used by the quickstart
       var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
@@ -80,7 +81,8 @@
           updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
           authorizeButton.onclick = handleAuthClick;
           signoutButton.onclick = handleSignoutClick;
-		  inserteventButton.onclick = loadCalendarApi;
+		  alert('123');
+		  inserteventButton.onclick = getCalendarEvents;
         }, function(error) {
           appendPre(JSON.stringify(error, null, 2));
         });
@@ -134,7 +136,7 @@
        */
       function listUpcomingEvents() {
         gapi.client.calendar.events.list({
-          'calendarId': '4kkpa1vfr1qtuh5p4esder1n5o@group.calendar.google.com',
+          'calendarId': CALENDAR_ID,
           'timeMin': (new Date()).toISOString(),
           'showDeleted': false,
           'singleEvents': true,
@@ -167,7 +169,7 @@
 		  var TIME_ZONE = 'Asia/Taipei';
 		  var insertEventD = {
 			'summary': 'Test',
-			'calendarId': '4kkpa1vfr1qtuh5p4esder1n5o@group.calendar.google.com',
+			'calendarId': CALENDAR_ID,
 			'start': {
 			'dateTime': '2020-11-30T07:30:00+08:00',
 			'timeZone': TIME_ZONE
@@ -183,6 +185,27 @@
 			'resource': insertEventD
 			});
 		// alert(JSON.stringify(request));
+		request.execute(function(event) {
+			appendPre('Event created: ' + JSON.stringify(event));
+		});
+	  }
+	  function getCalendarEvents() {
+	  		alert('123');
+
+        gapi.client.load('calendar', 'v3', getEvents);
+	  }
+	  function getEvents() {
+		var EventsD = {
+			'calendarId': CALENDAR_ID,
+			'maxResults': 30,
+			'orderBy': 'startTime',
+		  };
+			'singleEvents': true
+		var request = gapi.client.calendar.events.insert({
+			'calendarId': 'primary',
+			'resource': EventsD
+			});
+		alert(JSON.stringify(request));
 		request.execute(function(event) {
 			appendPre('Event created: ' + JSON.stringify(event));
 		});
