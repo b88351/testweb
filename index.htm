@@ -81,7 +81,6 @@
           updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
           authorizeButton.onclick = handleAuthClick;
           signoutButton.onclick = handleSignoutClick;
-		  alert('123');
 		  inserteventButton.onclick = getCalendarEvents;
         }, function(error) {
           appendPre(JSON.stringify(error, null, 2));
@@ -135,30 +134,17 @@
        * appropriate message is printed.
        */
       function listUpcomingEvents() {
-        gapi.client.calendar.events.list({
+        request = gapi.client.calendar.events.list({
           'calendarId': CALENDAR_ID,
-          'timeMin': (new Date()).toISOString(),
-          'showDeleted': false,
           'singleEvents': true,
-          'maxResults': 10,
+          'maxResults': 30,
           'orderBy': 'startTime'
-        }).then(function(response) {
-          var events = response.result.items;
-          appendPre('Upcoming events:');
-
-          if (events.length > 0) {
-            for (i = 0; i < events.length; i++) {
-              var event = events[i];
-              var when = event.start.dateTime;
-              if (!when) {
-                when = event.start.date;
-              }
-              appendPre(event.summary + ' (' + when + ')')
-            }
-          } else {
-            appendPre('No upcoming events found.');
-          }
-        });		
+        });	
+		alert(JSON.stringify(request));
+		request.execute(function(event) {
+            appendPre('Event created: ' + JSON.stringify(event));
+        });
+		alert('010');
       }
 	  
 	  
@@ -190,26 +176,28 @@
 		});
 	  }
 	  function getCalendarEvents() {
-	  		alert('123');
-
-        gapi.client.load('calendar', 'v3', getEvents);
-	  }
+		  alert('555');
+		  gapi.client.load('calendar', 'v3', getEvents);
+      }
 	  function getEvents() {
 		var EventsD = {
-			'calendarId': CALENDAR_ID,
-			'maxResults': 30,
-			'orderBy': 'startTime',
-		  };
-			'singleEvents': true
-		var request = gapi.client.calendar.events.insert({
-			'calendarId': 'primary',
-			'resource': EventsD
-			});
-		alert(JSON.stringify(request));
-		request.execute(function(event) {
-			appendPre('Event created: ' + JSON.stringify(event));
-		});
-	  }
+            'calendarId': CALENDAR_ID,
+            'maxResults': 30,
+            'orderBy': 'startTime',
+            'singleEvents': true
+          };
+
+        var request = gapi.client.calendar.calendarList.list({
+			apiKey: API_KEY,
+			discoveryDocs: DISCOVERY_DOCS,
+			scope: SCOPES,
+            calendarId: CALENDAR_ID,
+            });
+        alert(JSON.stringify(request));
+        request.execute(function(event) {
+            appendPre('Event created: ' + JSON.stringify(event));
+        });
+	  }	  
     </script>
 
     <script async defer src="https://apis.google.com/js/api.js"
