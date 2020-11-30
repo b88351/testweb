@@ -10,24 +10,51 @@
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" style="display: none;">Authorize</button>
     <button id="signout_button" style="display: none;">Sign Out</button>
+    <button id="show_ScheduleWeek" style="display: none;">Show schedule for week</button>
+	<button id="insert_Event" style="display: true;">Insert Event</button>
+<p></p>
+	<iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=Asia%2FTaipei&amp;src=NGtrcGExdmZyMXF0dWg1cDRlc2RlcjFuNW9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23A79B8E&amp;showTitle=0&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=1&amp;showCalendars=1&amp;showTz=0&amp;mode=WEEK" style="border:solid 1px #777" width="800" height="800" frameborder="0" scrolling="no"></iframe>
 
     <pre id="content" style="white-space: pre-wrap;"></pre>
 
     <script type="text/javascript">
       // Client ID and API key from the Developer Console
-      var CLIENT_ID = '478714615002-qcdr8uufvs3f8qa02ocpcuqu84fi3f17.apps.googleusercontent.com';
-      var API_KEY = 'AIzaSyBUDmGjzmeSkTuAqYPYC3bsRmBysMn66_4';
+      var CLIENT_ID = '907582575902-cj61g4ho1a1991obd0o9kejfciiqq2t6.apps.googleusercontent.com';
+      var API_KEY = 'AIzaSyBe0l0LjT6jgF6tmZzuHBxIGQpsBOUqkMI';
 
       // Array of API discovery doc URLs for APIs used by the quickstart
       var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+      var SCOPES = "https://www.googleapis.com/auth/calendar";
 
       var authorizeButton = document.getElementById('authorize_button');
       var signoutButton = document.getElementById('signout_button');
+	  var showscheduleweekButton = document.getElementById('show_ScheduleWeek');
+	  var inserteventButton = document.getElementById('insert_Event');
 
+	  //template insert event
+	  var TIME_ZONE = 'Asia/Taipei';
+// 	  var insertEventD = {
+// 	    'calendarId': 'primary',
+// 	    'start': {
+// 	  	'dateTime': '2020-11-30T07:30:00+08:00',
+// 	  	'timeZone': TIME_ZONE
+// 	    },
+// 	    'end': {
+// 	  	'dateTime': '2020-11-30T16:30:00+08:00',
+// 	  	'timeZone': TIME_ZONE
+// 	    }
+// 	    // 'recurrence': [
+// 	  	// 'RRULE:FREQ=DAILY;COUNT=2'
+// 	    // ],
+// 	    // 'attendees': [
+// 	  	// {'email': 'b88351@gmail.com'},
+// 	  	// {'email': 'c88351@gmail.com'}
+// 	    // ]
+// 	  };
+// 
       /**
        *  On load, called to load the auth2 library and API client library.
        */
@@ -53,6 +80,7 @@
           updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
           authorizeButton.onclick = handleAuthClick;
           signoutButton.onclick = handleSignoutClick;
+		  inserteventButton.onclick = loadCalendarApi;
         }, function(error) {
           appendPre(JSON.stringify(error, null, 2));
         });
@@ -106,7 +134,7 @@
        */
       function listUpcomingEvents() {
         gapi.client.calendar.events.list({
-          'calendarId': 'primary',
+          'calendarId': '4kkpa1vfr1qtuh5p4esder1n5o@group.calendar.google.com',
           'timeMin': (new Date()).toISOString(),
           'showDeleted': false,
           'singleEvents': true,
@@ -128,9 +156,37 @@
           } else {
             appendPre('No upcoming events found.');
           }
-        });
+        });		
       }
-
+	  
+	  
+	  function loadCalendarApi() {
+        gapi.client.load('calendar', 'v3', insertEvent);
+	  }
+	  function insertEvent() {
+		  var TIME_ZONE = 'Asia/Taipei';
+		  var insertEventD = {
+			'summary': 'Test',
+			'calendarId': '4kkpa1vfr1qtuh5p4esder1n5o@group.calendar.google.com',
+			'start': {
+			'dateTime': '2020-11-30T07:30:00+08:00',
+			'timeZone': TIME_ZONE
+			},
+			'end': {
+			'dateTime': '2020-11-30T16:30:00+08:00',
+			'timeZone': TIME_ZONE
+			}
+		  };
+	  
+		var request = gapi.client.calendar.events.insert({
+			'calendarId': 'primary',
+			'resource': insertEventD
+			});
+		// alert(JSON.stringify(request));
+		request.execute(function(event) {
+			appendPre('Event created: ' + JSON.stringify(event));
+		});
+	  }
     </script>
 
     <script async defer src="https://apis.google.com/js/api.js"
