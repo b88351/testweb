@@ -6,22 +6,25 @@
   </head>
   <body>
     <p>Google Calendar API Quickstart</p>
+<p></p>
+	<iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=Asia%2FTaipei&amp;src=NGtrcGExdmZyMXF0dWg1cDRlc2RlcjFuNW9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23A79B8E&amp;showTitle=0&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=1&amp;showCalendars=1&amp;showTz=0&amp;mode=WEEK" style="border:solid 1px #777" width="800" height="800" frameborder="0" scrolling="no"></iframe>
+
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" style="display: none;">Authorize</button>
     <button id="signout_button" style="display: none;">Sign Out</button>
     <button id="show_ScheduleWeek" style="display: none;">Show schedule for week</button>
 	<button id="insert_Event" style="display: true;">Insert Event</button>
-<p></p>
-	<iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=Asia%2FTaipei&amp;src=NGtrcGExdmZyMXF0dWg1cDRlc2RlcjFuNW9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23A79B8E&amp;showTitle=0&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=1&amp;showCalendars=1&amp;showTz=0&amp;mode=WEEK" style="border:solid 1px #777" width="800" height="800" frameborder="0" scrolling="no"></iframe>
-
+	<button id="Test" style="display: true;">Test</button>
+	
     <pre id="content" style="white-space: pre-wrap;"></pre>
 
     <script type="text/javascript">
       // Client ID and API key from the Developer Console
       var CLIENT_ID = '142701978725-i036ql23qnh5qeit4jrcn9v7q7cc9j2f.apps.googleusercontent.com';
-      var API_KEY = 'AIzaSyCQN-ai7bDGaMbE3D_vBeWWBGbEEacrwyw';
+      var API_KEY = 'AIzaSyA9IbdhG7kc7yDBy1DRy8blkodbifzebDw';
 	  var CALENDAR_ID = '4kkpa1vfr1qtuh5p4esder1n5o@group.calendar.google.com';
+	  var CLIENT_SECRET = '3obibi5X-FRvvE8Ohkk5rnJh';
 
       // Array of API discovery doc URLs for APIs used by the quickstart
       var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
@@ -34,6 +37,7 @@
       var signoutButton = document.getElementById('signout_button');
 	  var showscheduleweekButton = document.getElementById('show_ScheduleWeek');
 	  var inserteventButton = document.getElementById('insert_Event');
+	  var testButton = document.getElementById('Test');
 
 	  //template insert event
 	  var TIME_ZONE = 'Asia/Taipei';
@@ -66,6 +70,9 @@
       /**
        *  Initializes the API client library and sets up sign-in state
        *  listeners.
+	   
+	   		  client_secret: CLIENT_SECRET,
+
        */
       function initClient() {
         gapi.client.init({
@@ -81,7 +88,8 @@
           updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
           authorizeButton.onclick = handleAuthClick;
           signoutButton.onclick = handleSignoutClick;
-		  inserteventButton.onclick = getCalendarEvents;
+		  inserteventButton.onclick = loadCalendarApi;//getCalendarEvents;
+		  testButton.onclick = testFunc;
         }, function(error) {
           appendPre(JSON.stringify(error, null, 2));
         });
@@ -95,7 +103,7 @@
         if (isSignedIn) {
           authorizeButton.style.display = 'none';
           signoutButton.style.display = 'block';
-          listUpcomingEvents();
+          // listUpcomingEvents();
         } else {
           authorizeButton.style.display = 'block';
           signoutButton.style.display = 'none';
@@ -156,18 +164,19 @@
 		  var insertEventD = {
 			'summary': 'Test',
 			'calendarId': CALENDAR_ID,
+			'colorId': 8,
 			'start': {
-			'dateTime': '2020-11-30T07:30:00+08:00',
+			'dateTime': '2020-12-02T07:30:00+08:00',
 			'timeZone': TIME_ZONE
 			},
 			'end': {
-			'dateTime': '2020-11-30T16:30:00+08:00',
+			'dateTime': '2020-12-02T16:30:00+08:00',
 			'timeZone': TIME_ZONE
 			}
 		  };
 	  
 		var request = gapi.client.calendar.events.insert({
-			'calendarId': 'primary',
+			'calendarId': CALENDAR_ID,
 			'resource': insertEventD
 			});
 		// alert(JSON.stringify(request));
@@ -197,7 +206,31 @@
         request.execute(function(event) {
             appendPre('Event created: ' + JSON.stringify(event));
         });
-	  }	  
+	  }	
+	  
+	  //get the first day of the week from current date
+	  function getMonday(d) {
+		d = new Date(d);
+		var day = d.getDay(),
+		  diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+		return new Date(d.setDate(diff));
+	  }
+	  //get the first day of the next week from current date
+	  function getNextMonday(d) {
+		d = new Date(d);
+		var day = d.getDay(),
+		  diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+		return new Date(d.setDate(diff));
+	  }
+	  
+	  //Test
+	  function testFunc() {
+		d = new Date();
+		alert(JSON.stringify(d));
+		d = getMonday(d);
+		alert(JSON.stringify(d));
+		appendPre('Event created: ' + JSON.stringify(d));
+	  }	 
     </script>
 
     <script async defer src="https://apis.google.com/js/api.js"
