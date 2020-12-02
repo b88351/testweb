@@ -237,8 +237,12 @@
 		  //Morning shift
 		  dStart = new Date(d);
 		  dStart.setHours(7,30,00);//dStart.setMinutes(30);dStart.setSeconds(0);
+		  dStart.setTime(dStart.getTime() + (8*60*60*1000));
+
 		  dEnd = new Date(d);
 		  dEnd.setHours(16,30,00);//dEnd.setMinutes(30);dEnd.setMinutes(30);dEnd.setSeconds(0);
+		  dEnd.setTime(dEnd.getTime() + (8*60*60*1000));
+
 		  appendPre('Insert: ' + JSON.stringify(dStart) + ' ~ ' + JSON.stringify(dEnd));
 
 		  var insertEventD = {
