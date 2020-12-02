@@ -219,17 +219,18 @@
 	  function getNextMonday(d) {
 		d = new Date(d);
 		var day = d.getDay(),
-		  diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+		  diff = d.getDate() - day + (day == 0 ? -6:1) + 8; // adjust when day is sunday
 		return new Date(d.setDate(diff));
 	  }
 	  
 	  //Test
 	  function testFunc() {
 		d = new Date();
-		alert(JSON.stringify(d));
+		appendPre('Today: ' + JSON.stringify(d));
 		d = getMonday(d);
-		alert(JSON.stringify(d));
-		appendPre('Event created: ' + JSON.stringify(d));
+		appendPre('Monday of this week: ' + JSON.stringify(d));
+		d = getNextMonday(d);
+		appendPre('Monday of next week: ' + JSON.stringify(d));
 	  }	 
     </script>
 
