@@ -7,8 +7,9 @@
   <body>
     <p>Google Calendar API Quickstart</p>
 <p></p>
+<!--
 	<iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=Asia%2FTaipei&amp;src=NGtrcGExdmZyMXF0dWg1cDRlc2RlcjFuNW9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23A79B8E&amp;showTitle=0&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=1&amp;showCalendars=1&amp;showTz=0&amp;mode=WEEK" style="border:solid 1px #777" width="800" height="800" frameborder="0" scrolling="no"></iframe>
-
+-->
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" style="display: none;">Authorize</button>
@@ -222,15 +223,54 @@
 		  diff = d.getDate() - day + (day == 0 ? -6:1) + 8; // adjust when day is sunday
 		return new Date(d.setDate(diff));
 	  }
+	  //Create Event by d Date
+	  function insertEventByDate(d) {
+		  var TIME_ZONE = 'Asia/Taipei';
+		
+		  var nowda = new Date(Date.now());
+		  appendPre('Original Date: ' + JSON.stringify(nowda));		
+
+		  appendPre('Original Date: ' + JSON.stringify(d));
+		  appendPre('Original Date: ' + JSON.stringify(d.getTimezoneOffset));
+		  //appendPre('UTC Date: ' + JSON.stringify(d.getUTCHours()));
+		  
+		  //Morning shift
+		  dStart = new Date(d);
+		  dStart.setHours(7,30,00);//dStart.setMinutes(30);dStart.setSeconds(0);
+		  dEnd = new Date(d);
+		  dEnd.setHours(16,30,00);//dEnd.setMinutes(30);dEnd.setMinutes(30);dEnd.setSeconds(0);
+		  appendPre('Insert: ' + JSON.stringify(dStart) + ' ~ ' + JSON.stringify(dEnd));
+
+		  var insertEventD = {
+			'summary': 'Test',
+			'calendarId': CALENDAR_ID,
+			'colorId': 8,
+			'start': {
+			'dateTime': JSON.stringify(dStart).substring(1,20) + '+08:00',
+			'timeZone': TIME_ZONE
+			},
+			'end': {
+			'dateTime': JSON.stringify(dEnd).substring(1,20) + '+08:00',
+			'timeZone': TIME_ZONE
+			}
+		  };
+
+		  appendPre('InsertD: ' + JSON.stringify(insertEventD));
+		var request = gapi.client.calendar.events.insert({
+			'calendarId': CALENDAR_ID,
+			'resource': insertEventD
+			});
+		// alert(JSON.stringify(request));
+		request.execute(function(event) {
+			appendPre('Event created: ' + JSON.stringify(event));
+		});
+	  }
 	  
 	  //Test
 	  function testFunc() {
 		d = new Date();
-		appendPre('Today: ' + JSON.stringify(d));
-		d = getMonday(d);
-		appendPre('Monday of this week: ' + JSON.stringify(d));
 		d = getNextMonday(d);
-		appendPre('Monday of next week: ' + JSON.stringify(d));
+		gapi.client.load('calendar', 'v3', insertEventByDate(d));
 	  }	 
     </script>
 
