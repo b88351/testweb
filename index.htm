@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Google Calendar API Quickstart</title>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" >
   </head>
   <body>
     <p>Google Calendar API Quickstart</p>
@@ -16,10 +16,10 @@
     <button id="signout_button" style="display: none;">Sign Out</button>
     <button id="show_ScheduleWeek" style="display: none;">Show schedule for week</button>
 	<button id="insert_Event" style="display: true;">Insert Event</button>
-	<button id="Test" style="display: true;">Test</button>
+	<button id="Test" style="display: true;"> ´ú¸Õ </button>
 	
     <pre id="content" style="white-space: pre-wrap;"></pre>
-
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script type="text/javascript">
       // Client ID and API key from the Developer Console
       var CLIENT_ID = '142701978725-i036ql23qnh5qeit4jrcn9v7q7cc9j2f.apps.googleusercontent.com';
@@ -231,22 +231,23 @@
 		  appendPre('Original Date: ' + JSON.stringify(nowda));		
 
 		  appendPre('Original Date: ' + JSON.stringify(d));
-		  appendPre('Original Date: ' + JSON.stringify(d.getTimezoneOffset));
+		  appendPre("´ú¸ÕOriginal Date: " + JSON.stringify(d.getTimezoneOffset));
 		  //appendPre('UTC Date: ' + JSON.stringify(d.getUTCHours()));
 		  
 		  //Morning shift
 		  dStart = new Date(d);
 		  dStart.setHours(7,30,00);//dStart.setMinutes(30);dStart.setSeconds(0);
-		  dStart.setTime(dStart.getTime() + (8*60*60*1000));
+		  dStart.setTime(dStart.getTime() + (8*60*60*1000));// Add Time zone +08:00 (8 x Min x Sec x 1000)
 
 		  dEnd = new Date(d);
 		  dEnd.setHours(16,30,00);//dEnd.setMinutes(30);dEnd.setMinutes(30);dEnd.setSeconds(0);
-		  dEnd.setTime(dEnd.getTime() + (8*60*60*1000));
+		  dEnd.setTime(dEnd.getTime() + (8*60*60*1000));// Add Time zone +08:00 (8 x Min x Sec x 1000)
 
 		  appendPre('Insert: ' + JSON.stringify(dStart) + ' ~ ' + JSON.stringify(dEnd));
+		  //appendPre('InsertISOD: ' + dStart.toISOString() + ' ~ ' + dEnd.toISOString());
 
 		  var insertEventD = {
-			'summary': 'Test',
+			'summary': "©¨¬v",
 			'calendarId': CALENDAR_ID,
 			'colorId': 8,
 			'start': {
@@ -270,6 +271,34 @@
 		});
 	  }
 	  
+	  //Sample Code from https://developers.google.com/calendar/quickstart/js
+	  function listUpcomingEvents() {
+        gapi.client.calendar.events.list({
+          'calendarId': 'primary',
+          'timeMin': (new Date()).toISOString(),
+          'showDeleted': false,
+          'singleEvents': true,
+          'maxResults': 10,
+          'orderBy': 'startTime'
+        }).then(function(response) {
+          var events = response.result.items;
+          appendPre('Upcoming events:');
+
+          if (events.length > 0) {
+            for (i = 0; i < events.length; i++) {
+              var event = events[i];
+              var when = event.start.dateTime;
+              if (!when) {
+                when = event.start.date;
+              }
+              appendPre(event.summary + ' (' + when + ')')
+            }
+          } else {
+            appendPre('No upcoming events found.');
+          }
+        });
+      }
+	  
 	  //Test
 	  function testFunc() {
 		d = new Date();
@@ -280,7 +309,7 @@
 
     <script async defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"
-      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+      onreadystatechange="if (this.readyState === 'complete') this.onload()" charset = "UTF-8">
     </script>
   </body>
 </html>
