@@ -16,7 +16,7 @@
     <button id="signout_button" style="display: none;">Sign Out</button>
     <button id="show_ScheduleWeek" style="display: none;">Show schedule for week</button>
 	<button id="insert_Event" style="display: true;">Insert Event</button>
-	<button id="Test" style="display: true;"> ´ú¸Õ </button>
+	<button id="Test" style="display: true;"> æ¸¬è©¦ </button>
 	
     <pre id="content" style="white-space: pre-wrap;"></pre>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -231,7 +231,6 @@
 		  appendPre('Original Date: ' + JSON.stringify(nowda));		
 
 		  appendPre('Original Date: ' + JSON.stringify(d));
-		  appendPre("´ú¸ÕOriginal Date: " + JSON.stringify(d.getTimezoneOffset));
 		  //appendPre('UTC Date: ' + JSON.stringify(d.getUTCHours()));
 		  
 		  //Morning shift
@@ -245,30 +244,64 @@
 
 		  appendPre('Insert: ' + JSON.stringify(dStart) + ' ~ ' + JSON.stringify(dEnd));
 		  //appendPre('InsertISOD: ' + dStart.toISOString() + ' ~ ' + dEnd.toISOString());
+		
+		  var staffName    = ['ç‡•èŠ³','é’ç¿°','å¨å®','ç¿Šæ½”','è© ç€š','å²³æ´‹'];
+		  // ColorId https://lukeboyle.com/blog-posts/2016/04/google-calendar-api---color-id
+		  var staffColorId = [    11,     5,     9,     4,     8,     2];
+		  //appendPre('staffName :' + JSON.stringify(staffName.length));// 6
+		  
+//		  var insertEventsD = [{
+//			'summary': 'å²³æ´‹',
+//			'calendarId': CALENDAR_ID,
+//			'colorId': 8,
+//			'start': {
+//			'dateTime': JSON.stringify(dStart).substring(1,20) + '+08:00',
+//			'timeZone': TIME_ZONE
+//			},
+//			'end': {
+//			'dateTime': JSON.stringify(dEnd).substring(1,20) + '+08:00',
+//			'timeZone': TIME_ZONE
+//			}
+//		  }];
+//		  appendPre('InsertD: ' + JSON.stringify(insertEventsD));
+		  
+		  
+		  const batch = gapi.client.newBatch();
+		  staffName.map((r, j) => {
+			var insertEventsD = {
+			  'summary': staffName[j],
+			  'calendarId': CALENDAR_ID,
+			  'colorId': staffColorId[j],
+			  'start': {
+			  'dateTime': JSON.stringify(dStart).substring(1,20) + '+08:00',
+			  'timeZone': TIME_ZONE
+			  },
+			  'end': {
+			  'dateTime': JSON.stringify(dEnd).substring(1,20) + '+08:00',
+			  'timeZone': TIME_ZONE
+			  }
+			};
 
-		  var insertEventD = {
-			'summary': "©¨¬v",
-			'calendarId': CALENDAR_ID,
-			'colorId': 8,
-			'start': {
-			'dateTime': JSON.stringify(dStart).substring(1,20) + '+08:00',
-			'timeZone': TIME_ZONE
-			},
-			'end': {
-			'dateTime': JSON.stringify(dEnd).substring(1,20) + '+08:00',
-			'timeZone': TIME_ZONE
-			}
-		  };
-
-		  appendPre('InsertD: ' + JSON.stringify(insertEventD));
-		var request = gapi.client.calendar.events.insert({
-			'calendarId': CALENDAR_ID,
-			'resource': insertEventD
-			});
-		// alert(JSON.stringify(request));
-		request.execute(function(event) {
-			appendPre('Event created: ' + JSON.stringify(event));
-		});
+//			appendPre('staffName: ' + JSON.stringify(staffName[j]));
+			appendPre('insertEventsD: ' + JSON.stringify(insertEventsD));
+			batch.add(gapi.client.calendar.events.insert({
+			  'calendarId': 'CALENDAR_ID',
+			  'resource': insertEventsD
+			}));
+		  })
+		  batch.then(function(){
+			appendPre('all jobs now dynamically done!!!')
+		  });
+		  
+//		// insert one event
+//		var request = gapi.client.calendar.events.insert({
+//			'calendarId': CALENDAR_ID,
+//			'resource': insertEventD
+//			});
+//		// alert(JSON.stringify(request));
+//		request.execute(function(event) {
+//			appendPre('Event created: ' + JSON.stringify(event));
+//		});
 	  }
 	  
 	  //Sample Code from https://developers.google.com/calendar/quickstart/js
