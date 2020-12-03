@@ -228,7 +228,7 @@
 		  var TIME_ZONE = 'Asia/Taipei';
 		
 		  var nowda = new Date(Date.now());
-		  appendPre('Original Date: ' + JSON.stringify(nowda));		
+		  //appendPre('Original Date: ' + JSON.stringify(nowda));		
 
 		  appendPre('Original Date: ' + JSON.stringify(d));
 		  //appendPre('UTC Date: ' + JSON.stringify(d.getUTCHours()));
@@ -249,7 +249,39 @@
 		  // ColorId https://lukeboyle.com/blog-posts/2016/04/google-calendar-api---color-id
 		  var staffColorId = [    11,     5,     9,     4,     8,     2];
 		  //appendPre('staffName :' + JSON.stringify(staffName.length));// 6
-		  
+
+
+//		  // Way 2
+		  var request;
+		  var events=[];
+		  for(var j = 0; j<staffName.length; j++) {
+			var insertEventsD = {
+			  'summary': staffName[j],
+			  'calendarId': CALENDAR_ID,
+			  'colorId': staffColorId[j],
+			  'start': {
+			  'dateTime': JSON.stringify(dStart).substring(1,20) + '+08:00',
+			  'timeZone': TIME_ZONE
+			  },
+			  'end': {
+			  'dateTime': JSON.stringify(dEnd).substring(1,20) + '+08:00',
+			  'timeZone': TIME_ZONE
+			  }};
+			events[j]=insertEventsD;
+			appendPre('events'+ j + JSON.stringify(events[j]));
+
+			request = function(resource) {  // Function that returns a request.
+			  return gapi.client.calendar.events.insert({
+				'calendarId': CALENDAR_ID,
+				  'resource': events[j]
+				});
+			  }(events[j]);  // Bind to the current event.
+			  request.execute(function(resp) {
+				appendPre(JSON.stringify(resp));
+			  });
+			}
+
+//-------------------------------------------------------------		  
 //		  var insertEventsD = [{
 //			'summary': '岳洋',
 //			'calendarId': CALENDAR_ID,
@@ -265,34 +297,43 @@
 //		  }];
 //		  appendPre('InsertD: ' + JSON.stringify(insertEventsD));
 		  
-		  
-		  const batch = gapi.client.newBatch();
-		  staffName.map((r, j) => {
-			var insertEventsD = {
-			  'summary': staffName[j],
-			  'calendarId': CALENDAR_ID,
-			  'colorId': staffColorId[j],
-			  'start': {
-			  'dateTime': JSON.stringify(dStart).substring(1,20) + '+08:00',
-			  'timeZone': TIME_ZONE
-			  },
-			  'end': {
-			  'dateTime': JSON.stringify(dEnd).substring(1,20) + '+08:00',
-			  'timeZone': TIME_ZONE
-			  }
-			};
-
+//		  const batch = gapi.client.newBatch();
+//		  staffName.map((r, j) => {
+//			var insertEventsD = {
+//			  'summary': staffName[j],
+//			  'calendarId': CALENDAR_ID,
+//			  'colorId': staffColorId[j],
+//			  'start': {
+//			  'dateTime': JSON.stringify(dStart).substring(1,20) + '+08:00',
+//			  'timeZone': TIME_ZONE
+//			  },
+//			  'end': {
+//			  'dateTime': JSON.stringify(dEnd).substring(1,20) + '+08:00',
+//			  'timeZone': TIME_ZONE
+//			  }
+//			};
+//
 //			appendPre('staffName: ' + JSON.stringify(staffName[j]));
-			appendPre('insertEventsD: ' + JSON.stringify(insertEventsD));
-			batch.add(gapi.client.calendar.events.insert({
-			  'calendarId': 'CALENDAR_ID',
-			  'resource': insertEventsD
-			}));
-		  })
-		  batch.then(function(){
-			appendPre('all jobs now dynamically done!!!')
-		  });
-		  
+//			appendPre('insertEventsD: ' + JSON.stringify(insertEventsD));
+//			batch.add(
+//			  gapi.client.calendar.events.insert({
+//			  'calendarId': 'CALENDAR_ID',
+//			  'resource': insertEventsD
+//			  appendPre('staffName: ' + JSON.stringify(staffName[j]))
+//		    );
+//		  batch.then(function(){
+//			appendPre('all jobs now dynamically done!!!')
+//		  })
+//		  // Using execute
+//		  batch.execute(function() {
+//				appendPre('execute')
+//				// This callback not called if batchContainers fails
+//			});
+//			// Using then
+//			batch.then(function() {
+//				appendPre('then')
+//				// Request callbacks not called
+//			});
 //		// insert one event
 //		var request = gapi.client.calendar.events.insert({
 //			'calendarId': CALENDAR_ID,
