@@ -220,14 +220,14 @@
 	  function getNextMonday(d) {
 		d = new Date(d);
 		var day = d.getDay(),
-		  diff = d.getDate() - day + (day == 0 ? -6:1) + 8; // adjust when day is sunday
+		  diff = d.getDate() - day + (day == 0 ? -6:1) + 7; // adjust when day is sunday
 		return new Date(d.setDate(diff));
 	  }
 	  //Create Event by d Date
 	  function insertEventByDate(d) {
 		  var TIME_ZONE = 'Asia/Taipei';
 		
-		  var nowda = new Date(Date.now());
+		  //var nowda = new Date(Date.now());
 		  //appendPre('Original Date: ' + JSON.stringify(nowda));		
 
 		  appendPre('Original Date: ' + JSON.stringify(d));
@@ -238,11 +238,11 @@
 		  dStart.setHours(7,30,00);//dStart.setMinutes(30);dStart.setSeconds(0);
 		  dStart.setTime(dStart.getTime() + (8*60*60*1000));// Add Time zone +08:00 (8 x Min x Sec x 1000)
 
-		  dEnd = new Date(d);
-		  dEnd.setHours(16,30,00);//dEnd.setMinutes(30);dEnd.setMinutes(30);dEnd.setSeconds(0);
-		  dEnd.setTime(dEnd.getTime() + (8*60*60*1000));// Add Time zone +08:00 (8 x Min x Sec x 1000)
+		  dEnd = new Date();
+		  //dEnd.setHours(16,30,00);//dEnd.setMinutes(30);dEnd.setMinutes(30);dEnd.setSeconds(0);
+		  //dEnd.setTime(dEnd.getTime() + (8*60*60*1000));// Add Time zone +08:00 (8 x Min x Sec x 1000)
 
-		  appendPre('Insert: ' + JSON.stringify(dStart) + ' ~ ' + JSON.stringify(dEnd));
+		  //appendPre('Insert: ' + JSON.stringify(dStart) + ' ~ ' + JSON.stringify(dEnd));
 		  //appendPre('InsertISOD: ' + dStart.toISOString() + ' ~ ' + dEnd.toISOString());
 		
 		  var staffName    = ['燕芳','青翰','威宏','翊潔','詠瀚','岳洋'];
@@ -254,32 +254,53 @@
 //		  // Way 2
 		  var request;
 		  var events=[];
-		  for(var j = 0; j<staffName.length; j++) {
-			var insertEventsD = {
-			  'summary': staffName[j],
-			  'calendarId': CALENDAR_ID,
-			  'colorId': staffColorId[j],
-			  'start': {
-			  'dateTime': JSON.stringify(dStart).substring(1,20) + '+08:00',
-			  'timeZone': TIME_ZONE
-			  },
-			  'end': {
-			  'dateTime': JSON.stringify(dEnd).substring(1,20) + '+08:00',
-			  'timeZone': TIME_ZONE
-			  }};
-			events[j]=insertEventsD;
-			appendPre('events'+ j + JSON.stringify(events[j]));
+		  for(var i = 0; i < 7; i++) {
+			  for(var j = 0; j < staffName.length; j++) {
+				dEnd.setTime(dStart.getTime() + (9 * 60 * 60 * 1000));// 9 hrs work times
+				var insertEventsD = {
+				  'summary': staffName[j],
+				  'calendarId': CALENDAR_ID,
+				  'colorId': staffColorId[j],
+				  'start': {
+				  'dateTime': JSON.stringify(dStart).substring(1,20)+ '+08:00',
+				  'timeZone': TIME_ZONE
+				  },
+				  'end': {
+				  'dateTime': JSON.stringify(dEnd).substring(1,20) + '+08:00',
+				  'timeZone': TIME_ZONE
+				  }};
+				events[i * 6 + j]=insertEventsD;
 
-			request = function(resource) {  // Function that returns a request.
-			  return gapi.client.calendar.events.insert({
-				'calendarId': CALENDAR_ID,
-				  'resource': events[j]
-				});
-			  }(events[j]);  // Bind to the current event.
+//				appendPre('events'+ j + JSON.stringify(events[j]));
+
+//				request = function(resource) {  // Function that returns a request.
+//				  return gapi.client.calendar.events.insert({
+//					'calendarId': CALENDAR_ID,
+//					  'resource': events[j]
+//					});
+//				  }(events[j]);  // Bind to the current event.
+//				  request.execute(function(resp) {
+//					appendPre('request: ' + JSON.stringify(resp));
+//				});
+			  }
+			  dStart.setTime(dStart.getTime() + (1 * 24 * 60 * 60 * 1000));
+
+		  }
+
+		  for(var jj = 0; jj < events.length; jj++) {
+//			appendPre('events['+ jj +  ']' + JSON.stringify(events[jj]));
+			  request = function(resource) {  // Function that returns a request.
+				return gapi.client.calendar.events.insert({
+					'calendarId': CALENDAR_ID,
+					'resource': events[jj]
+					});
+			  }(events[jj]);  // Bind to the current event.
 			  request.execute(function(resp) {
-				appendPre(JSON.stringify(resp));
+					appendPre('request: ' + JSON.stringify(resp));
 			  });
-			}
+		  }
+
+
 
 //-------------------------------------------------------------		  
 //		  var insertEventsD = [{
