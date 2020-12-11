@@ -9,13 +9,43 @@
 <p></p>
 
 	<iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=Asia%2FTaipei&amp;src=NGtrcGExdmZyMXF0dWg1cDRlc2RlcjFuNW9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23A79B8E&amp;showTitle=0&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=1&amp;showCalendars=1&amp;showTz=0&amp;mode=WEEK" style="border:solid 1px #777" width="800" height="800" frameborder="0" scrolling="no"></iframe>
+	<table>
+	  <tbody id="tbody1">
+	  </tbody>
+	</table>
+
+<style type="text/css">
+<!--
+table{
+    border-collapse:collapse;
+    border:1px solid black;
+}
+td{
+    border:1px solid black;
+}
+-->
+</style>
+<table border="1" style="font-family:Arial;">
+<tr>
+　<td width="50px">7.5</td>
+　<td width="50px">14.5</td>
+　<td bgcolor=#434343 width="50px"> </td>
+　</tr>
+<tr>
+　<td width="50px">10.5</td>
+　<td width="50px">19.5</td>
+　<td bgcolor=#434343 width="50px"> </td>
+</tr>
+</table>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" style="display: none;">Authorize</button>
     <button id="signout_button" style="display: none;">Sign Out</button>
     <button id="show_ScheduleWeek" style="display: none;">Show schedule for week</button>
-	<button id="insert_Event" style="display: true;">Insert Event</button>
+	<button id="insert_Event" style="display: none;">Insert Event</button>
+	<button id="Remove_Event" style="display: none;"> 刪除活動 </button>
 	<button id="Test" style="display: true;"> 測試 </button>
+
 	
     <pre id="content" style="white-space: pre-wrap;"></pre>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -103,7 +133,7 @@
         if (isSignedIn) {
           authorizeButton.style.display = 'none';
           signoutButton.style.display = 'block';
-          // listUpcomingEvents();
+          listUpcomingEvents();
         } else {
           authorizeButton.style.display = 'block';
           signoutButton.style.display = 'none';
@@ -209,10 +239,29 @@
 	  }	
 	  
 	  //get the first day of the week from current date
+	  function resetDateToTTC800(d) {
+		d = new Date(d);
+		
+		return new Date();
+	  }	  
 	  function getMonday(d) {
 		d = new Date(d);
 		var day = d.getDay(),
 		  diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+		appendPre('getMonday:' + (new Date(d.setDate(diff))).toISOString());
+		return new Date(d.setDate(diff));
+	  }
+	  function getMonday(d) {
+		d = new Date(d);
+		var day = d.getDay(),
+		  diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+		appendPre('getMonday:' + (new Date(d.setDate(diff))).toISOString());
+		return new Date(d.setDate(diff));
+	  }
+	  function getSunday(d) {
+		d = new Date(d);
+		var day = d.getDay(),
+		  diff = d.getDate() - day + (day == 0 ? -6:1) + 6; // adjust when day is sunday
 		return new Date(d.setDate(diff));
 	  }
 	  //get the first day of the next week from current date
@@ -222,6 +271,15 @@
 		  diff = d.getDate() - day + (day == 0 ? -6:1) + 7; // adjust when day is sunday
 		return new Date(d.setDate(diff));
 	  }
+	  //sleep //unused
+	  function sleep(duration) {
+	  	return new Promise(resolve => {
+	  		setTimeout(() => {
+	  			resolve()
+	  		}, duration * 1000)
+	  	})
+	  }
+	  
 	  //Create Event by d Date
 	  function insertEventByDate(d) {
 		  var TIME_ZONE = 'Asia/Taipei';
@@ -287,92 +345,43 @@
 		  }
 
 		  for(var jj = 0; jj < events.length; jj++) {
-//			appendPre('events['+ jj +  ']' + JSON.stringify(events[jj]));
+			  sleep(1000).then(() => {
+			  //			appendPre('events['+ jj +  ']' + JSON.stringify(events[jj]));
 			  request = function(resource) {  // Function that returns a request.
 				return gapi.client.calendar.events.insert({
 					'calendarId': CALENDAR_ID,
 					'resource': events[jj]
 					});
 			  }(events[jj]);  // Bind to the current event.
-			  request.execute(function(resp) {
-					appendPre('request: ' + JSON.stringify(resp));
-			  });
+
+			    request.execute(function(resp) {
+				  appendPre('request: ' + JSON.stringify(resp));
+			    });
+			  })
 		  }
-
-
-
-//-------------------------------------------------------------		  
-//		  var insertEventsD = [{
-//			'summary': '岳洋',
-//			'calendarId': CALENDAR_ID,
-//			'colorId': 8,
-//			'start': {
-//			'dateTime': JSON.stringify(dStart).substring(1,20) + '+08:00',
-//			'timeZone': TIME_ZONE
-//			},
-//			'end': {
-//			'dateTime': JSON.stringify(dEnd).substring(1,20) + '+08:00',
-//			'timeZone': TIME_ZONE
-//			}
-//		  }];
-//		  appendPre('InsertD: ' + JSON.stringify(insertEventsD));
-		  
-//		  const batch = gapi.client.newBatch();
-//		  staffName.map((r, j) => {
-//			var insertEventsD = {
-//			  'summary': staffName[j],
-//			  'calendarId': CALENDAR_ID,
-//			  'colorId': staffColorId[j],
-//			  'start': {
-//			  'dateTime': JSON.stringify(dStart).substring(1,20) + '+08:00',
-//			  'timeZone': TIME_ZONE
-//			  },
-//			  'end': {
-//			  'dateTime': JSON.stringify(dEnd).substring(1,20) + '+08:00',
-//			  'timeZone': TIME_ZONE
-//			  }
-//			};
-//
-//			appendPre('staffName: ' + JSON.stringify(staffName[j]));
-//			appendPre('insertEventsD: ' + JSON.stringify(insertEventsD));
-//			batch.add(
-//			  gapi.client.calendar.events.insert({
-//			  'calendarId': 'CALENDAR_ID',
-//			  'resource': insertEventsD
-//			  appendPre('staffName: ' + JSON.stringify(staffName[j]))
-//		    );
-//		  batch.then(function(){
-//			appendPre('all jobs now dynamically done!!!')
-//		  })
-//		  // Using execute
-//		  batch.execute(function() {
-//				appendPre('execute')
-//				// This callback not called if batchContainers fails
-//			});
-//			// Using then
-//			batch.then(function() {
-//				appendPre('then')
-//				// Request callbacks not called
-//			});
-//		// insert one event
-//		var request = gapi.client.calendar.events.insert({
-//			'calendarId': CALENDAR_ID,
-//			'resource': insertEventD
-//			});
-//		// alert(JSON.stringify(request));
-//		request.execute(function(event) {
-//			appendPre('Event created: ' + JSON.stringify(event));
-//		});
 	  }
+	  
+	  function creatTable(data){
+		//這個函式的引數可以是從後臺傳過來的也可以是從其他任何地方傳過來的
+		//這裡我假設這個data是一個長度為5的字串陣列 我要把他放在表格的一行裡面，分成五列
+		var tableData="<tr>"
+		//動態增加5個td,並且把data陣列的五個值賦給每個td
+		for(var i=0;i<data.length;i++){
+		  tableData+="<td>"+data[i]+"</td>"
+		}
+		tableData+="</tr>"
+		//現在tableData已經生成好了，把他賦值給上面的tbody
+		$("#tbody1").html(tableData)
+	  }	  
 	  
 	  //Sample Code from https://developers.google.com/calendar/quickstart/js
 	  function listUpcomingEvents() {
+	    appendPre('Hi');
         gapi.client.calendar.events.list({
-          'calendarId': 'primary',
-          'timeMin': (new Date()).toISOString(),
-          'showDeleted': false,
+          'calendarId': CALENDAR_ID,
+          'timeMin': (getMonday(new Date())).toISOString(),
           'singleEvents': true,
-          'maxResults': 10,
+          'maxResults': 50,
           'orderBy': 'startTime'
         }).then(function(response) {
           var events = response.result.items;
