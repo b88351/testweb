@@ -1,47 +1,39 @@
 <!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link type="text/css" href="resources/sheet.css" >
 <html>
   <head>
-    <title>Google Calendar API Quickstart</title>
+    <title> 班表 預覽 </title>
     <meta charset="utf-8" >
   </head>
   <body>
-    <p>Google Calendar API Quickstart</p>
-<p></p>
 
-	<iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=Asia%2FTaipei&amp;src=NGtrcGExdmZyMXF0dWg1cDRlc2RlcjFuNW9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23A79B8E&amp;showTitle=0&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=1&amp;showCalendars=1&amp;showTz=0&amp;mode=WEEK" style="border:solid 1px #777" width="800" height="800" frameborder="0" scrolling="no"></iframe>
+	<p>當周班表</p>
+	  <button id="hide_ScheduleWeek_button" style="display: true;">隱藏</button>
+	  <button id="show_ScheduleWeek_button" style="display: none;">顯示</button>
+	  <p></p>
+	<iframe id="scheduleWeek" src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=Asia%2FTaipei&amp;src=NGtrcGExdmZyMXF0dWg1cDRlc2RlcjFuNW9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23A79B8E&amp;showTitle=0&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=1&amp;showCalendars=1&amp;showTz=0&amp;mode=WEEK" style="border:solid 1px #777 display:true" width="800" height="800" frameborder="0" scrolling="no" ></iframe>
 	<table>
 	  <tbody id="tbody1">
 	  </tbody>
 	</table>
 
-<style type="text/css">
-<!--
-table{
-    border-collapse:collapse;
-    border:1px solid black;
-}
-td{
-    border:1px solid black;
-}
--->
-</style>
-<table border="1" style="font-family:Arial;">
-<tr>
-　<td width="50px">7.5</td>
-　<td width="50px">14.5</td>
-　<td bgcolor=#434343 width="50px"> </td>
-　</tr>
-<tr>
-　<td width="50px">10.5</td>
-　<td width="50px">19.5</td>
-　<td bgcolor=#434343 width="50px"> </td>
-</tr>
-</table>
+	<table class='testTable'>
+	<tr>
+	　<td width="50px" >7.5</td>
+	　<td width="50px">14.5</td>
+	　<td bgcolor=#434343 width="50px"> </td>
+	　</tr>
+	<tr>
+	　<td width="50px">10.5</td>
+	　<td width="50px">19.5</td>
+	　<td bgcolor=#434343 width="50px"> </td>
+	</tr>
+	</table>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" style="display: none;">Authorize</button>
     <button id="signout_button" style="display: none;">Sign Out</button>
-    <button id="show_ScheduleWeek" style="display: none;">Show schedule for week</button>
 	<button id="insert_Event" style="display: none;">Insert Event</button>
 	<button id="Remove_Event" style="display: none;"> 刪除活動 </button>
 	<button id="Test" style="display: true;"> 測試 </button>
@@ -63,9 +55,14 @@ td{
       // included, separated by spaces.
       var SCOPES = "https://www.googleapis.com/auth/calendar";
 
+	  var staffName    = ['燕芳','青翰','威宏','翊潔','詠瀚','岳洋'];
+	  
+
       var authorizeButton = document.getElementById('authorize_button');
       var signoutButton = document.getElementById('signout_button');
-	  var showscheduleweekButton = document.getElementById('show_ScheduleWeek');
+	  var scheduleIFrame = document.getElementById('scheduleWeek');
+	  var showscheduleweekButton = document.getElementById('show_ScheduleWeek_button');
+	  var hidescheduleweekButton = document.getElementById('hide_ScheduleWeek_button');
 	  var inserteventButton = document.getElementById('insert_Event');
 	  var testButton = document.getElementById('Test');
 
@@ -119,7 +116,10 @@ td{
           authorizeButton.onclick = handleAuthClick;
           signoutButton.onclick = handleSignoutClick;
 		  inserteventButton.onclick = loadCalendarApi;//getCalendarEvents;
+		  showscheduleweekButton.onclick = showOrNotScheduleWeek;
+		  hidescheduleweekButton.onclick = hideOrNotScheduleWeek;
 		  testButton.onclick = testFunc;
+		  
         }, function(error) {
           appendPre(JSON.stringify(error, null, 2));
         });
@@ -131,9 +131,9 @@ td{
        */
       function updateSigninStatus(isSignedIn) {
         if (isSignedIn) {
-          authorizeButton.style.display = 'none';
+          authorizeButton.style.display = "none";
           signoutButton.style.display = 'block';
-          listUpcomingEvents();
+          //listUpcomingEvents();
         } else {
           authorizeButton.style.display = 'block';
           signoutButton.style.display = 'none';
@@ -239,10 +239,12 @@ td{
 	  }	
 	  
 	  //get the first day of the week from current date
-	  function resetDateToTTC800(d) {
-		d = new Date(d);
-		
-		return new Date();
+	  function resetDateToUTC800(d) {
+		dTmp = new Date(d);
+		//appendPre('NOW  :' + JSON.stringify(dTmp) + 'Offset:' + JSON.stringify(dTmp.getTimezoneOffset())); // Offset : -480 mins
+		dTmp.setTime(dTmp.getTime() + (8*60*60*1000));// Add Time zone Offset To +08:00 (6 x Min x Sec x 1000)
+		//appendPre('UTC8 :' + JSON.stringify(dTmp));
+		return new Date(dTmp);
 	  }	  
 	  function getMonday(d) {
 		d = new Date(d);
@@ -302,7 +304,6 @@ td{
 		  //appendPre('Insert: ' + JSON.stringify(dStart) + ' ~ ' + JSON.stringify(dEnd));
 		  //appendPre('InsertISOD: ' + dStart.toISOString() + ' ~ ' + dEnd.toISOString());
 		
-		  var staffName    = ['燕芳','青翰','威宏','翊潔','詠瀚','岳洋'];
 		  // ColorId https://lukeboyle.com/blog-posts/2016/04/google-calendar-api---color-id
 		  var staffColorId = [    11,     5,     9,     4,     8,     2];
 		  //appendPre('staffName :' + JSON.stringify(staffName.length));// 6
@@ -376,10 +377,13 @@ td{
 	  
 	  //Sample Code from https://developers.google.com/calendar/quickstart/js
 	  function listUpcomingEvents() {
-	    appendPre('Hi');
+
+//		var ddd = new Date(Date.now());
+		var dTw = resetDateToUTC800(Date.now());
+		// appendPre('TW now :' + JSON.stringify(dTw));
         gapi.client.calendar.events.list({
           'calendarId': CALENDAR_ID,
-          'timeMin': (getMonday(new Date())).toISOString(),
+          'timeMin': (getMonday(dTw)).toISOString(),
           'singleEvents': true,
           'maxResults': 50,
           'orderBy': 'startTime'
@@ -391,6 +395,7 @@ td{
             for (i = 0; i < events.length; i++) {
               var event = events[i];
               var when = event.start.dateTime;
+			  appendPre(JSON.stringify(event));
               if (!when) {
                 when = event.start.date;
               }
@@ -401,6 +406,23 @@ td{
           }
         });
       }
+	  
+	  //show_ScheduleWeek
+	  function showOrNotScheduleWeek() {
+//		appendPre('000'+ JSON.stringify(scheduleIFrame.style.display));
+		  appendPre('show'+ JSON.stringify(showscheduleweekButton.display));
+		  scheduleIFrame.style.display = 'block';
+		  showscheduleweekButton.style.display = 'none';
+		  hidescheduleweekButton.style.display = 'block';
+	  }
+	  
+	  function hideOrNotScheduleWeek() {
+		  appendPre('hide'+ JSON.stringify(showscheduleweekButton.display));
+		  scheduleIFrame.style.display = 'none';
+		  showscheduleweekButton.style.display = 'block';
+		  hidescheduleweekButton.style.display = 'none';
+		  appendPre('hide'+ JSON.stringify(showscheduleweekButton.display));
+	  }
 	  
 	  //Test
 	  function testFunc() {
