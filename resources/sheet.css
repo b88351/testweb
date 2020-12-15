@@ -1,7 +1,30 @@
-table tr td{
-	border-collapse:collapse;
-    border:1px solid black;
+table{
+	text-align: center;
 	font-size: 10px;
-	border:1;
 	font-family: Arial;
+
+	border-collapse: collapse;
+	direction: ltr;
+}
+
+tr{
+	border:1px SOLID black;
+}
+
+td{
+	border:1px SOLID black;
+	width: 50px;
+}
+
+trrrrrr{
+	border:1px SOLID white;
+	border-bottom: 1px SOLID #FFFFFF;
+}
+
+
+
+tdddddd{
+	border:1px SOLID black;
+	border-right: 1px SOLID #000000;
+	width: 50px;
 }
