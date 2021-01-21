@@ -13,11 +13,8 @@
 	  <button id="show_ScheduleWeek_button" style="display: none;">顯示</button>
 	  <p></p>
 	<iframe id="scheduleWeek" src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=2&amp;bgcolor=%23ffffff&amp;ctz=Asia%2FTaipei&amp;src=NGtrcGExdmZyMXF0dWg1cDRlc2RlcjFuNW9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23A79B8E&amp;showTitle=0&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=1&amp;showCalendars=1&amp;showTz=0&amp;mode=WEEK" style="border:solid 1px #777 display:true" width="800" height="800" frameborder="0" scrolling="no" ></iframe>
-	<table style="display: none;">
-	  <tbody id="tbody1">
-	  </tbody>
-	</table>
 
+	<span id=tbody1></span>
 	<!-- <table> -->
 	<!-- <tr> -->
 	<!-- 　<td>7.5</td> -->
@@ -391,7 +388,7 @@
 		  for (s = 0; s < staffName.length; s++) {
 			var staffschedule = {"startDateTime":[], "endDateTime":[]};
 			schedules.push(staffschedule);
-			appendPre(JSON.stringify(staffschedule));
+			//appendPre(JSON.stringify(staffschedule));
 		  }
 		  
           var events = response.result.items;
@@ -411,7 +408,7 @@
 				schedules[nIndex].startDateTime.push(event.start.dateTime);
 				schedules[nIndex].endDateTime.push(event.end.dateTime);
 
-				appendPre('SSS' + JSON.stringify(schedules[nIndex]));
+				//appendPre('SSS' + JSON.stringify(schedules[nIndex]));
 			  }
 			  //var staffName    = ['燕芳','青翰','威宏','翊潔','詠瀚','岳洋'];
 			  //var tmpdata = { "staffName":event.summary, "startDateTime":event.start.dateTime, "endDateTime":event.end.dateTime};
@@ -425,11 +422,42 @@
             appendPre('No upcoming events found.');
           }
 		  
-		appendPre('--------------------------------');
+		appendPre('--------------------------------[' + JSON.stringify(schedules.length) + ']'); 
 		appendPre(JSON.stringify(schedules));
-		for (ii = 0; ii < schedules.length; ii++) {
-			appendPre('###' + JSON.stringify(schedules[ii]));
+//		for (iStaff = 0; iStaff < schedules.length; iStaff++) {
+//			//appendPre('###' + JSON.stringify(schedules[iStaff]));
+//			var firstDay = getMonday(dTw);
+//			//startDateTime 		schedules[iStaff].startDateTime.length
+//			for (istartDateTime = 0; istartDateTime < 7; istartDateTime++) {
+//				var startDate = new date(schedules[iStaff].startDateTime[istartDateTime]);
+//				//
+//				for (istartDateTime = 0; ii < schedules[iStaff].startDateTime.length; ii++) {
+//					
+//				}
+//
+//				<!-- if (startDate - firstDay.getDay() == istartDateTime) { -->
+//				<!-- } -->
+//			}
+//			//endDateTime
+//			
+//			
+//			
+//			for (ii = 0; ii < schedules.length; ii++) {
+//			
+//			}
+//		}
+		var tableData="<tr>"
+		//動態增加5個td,並且把data陣列的五個值賦給每個td
+		for (iStaff = 0; iStaff < staffName.length; iStaff++) {
+		  tableData+="<td>" + schedules[iStaff].startDateTime[0	]+"</td>"
 		}
+		tableData+="</tr>"
+		//現在tableData已經生成好了，把他賦值給上面的tbody
+		appendPre(JSON.stringify(tableData));
+
+		$("#tbody1").html(tableData)
+		appendPre(JSON.stringify(tableData));
+		  
 		  
         });
 		  
