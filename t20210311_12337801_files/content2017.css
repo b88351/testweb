@@ -1,0 +1,31 @@
+@charset "gb2312";
+/* CSS Document */
+div#main h1 {margin:0 1.85%;font-size:5.5vw;line-height:1.5em;font-weight:bold;text-align:center;}
+div#main div#info {margin:0 1.85%;font-size:3.7vw;color:#6f6f6f;text-align:center;}
+div#main div#contentArea {margin:0 1.38%;padding:0 0 2.85%;font-size:4.6vw;line-height:1.5em;}
+div#main div#contentArea img {max-width:90.67%;margin:0 auto;}
+/*********************************    “¿≥ﬂ¥ÁÀı∑≈    *********************************/
+@media screen and (max-width:1920px){
+/*main_begin*/
+div#main h1 {font-size:2.6375rem;}
+div#main div#info {padding:0.9% 0 3.94%;font-size:1.775rem;}
+div#main div#contentArea {font-size:2.1875rem;}
+/*main_end*/
+}
+@media screen and (max-width:768px){
+/*main_begin*/
+div#main h1 {font-size:5.5vw;}
+div#main div#info {font-size:3.7vw;}
+div#main div#contentArea {font-size:4.6vw;}
+/*main_end*/
+}
+@media screen and (max-width:500px){
+/*main*/
+/*main*/
+}
+@media screen and (max-width:400px){
+}
+@media screen and (max-width:320px){
+
+}
+
