@@ -9,7 +9,7 @@ h1,h2,h3 {font-weight:normal;}
 ul {list-style:none;}
 a {text-decoration:none;color:#000;transition:color 0.3s ease 0s;}
 /*header_begin*/
-header {padding:25.7vw 0 0;background:url("http://www.gwytb.gov.cn/images/banner2017M.jpg") center top no-repeat;background-size:100% auto;}
+header {padding:25.7vw 0 0;background:url("banner2017M.jpg") center top no-repeat;background-size:100% auto;}
 header nav {display:flex;flex-wrap:nowrap;justify-content:space-around;padding:1.75% 0 1.85%;font-size:2.875rem;font-weight:bold;line-height:1em;text-align:center;background:url("http://www.gwytb.gov.cn/images/titBg2017M.gif") left center repeat-x;background-size:auto 100%;}
 header nav a {flex-grow:1;}
 header nav a:nth-of-type(2) {background:url("http://www.gwytb.gov.cn/images/navBg2017M.png") left center no-repeat,url("http://www.gwytb.gov.cn/images/navBg2017M.png") right center no-repeat;background-size:auto 100%;}
