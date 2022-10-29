@@ -1,1 +1,0 @@
-(function(){tinker.extend({resizeFunc:function(b){var a=this;a.eventHandler.addHandler(window,"resize",function(c){if(typeof b!=="function"){a.throttle(function(){b},a)}else{a.throttle(b,a)}})}})})();
