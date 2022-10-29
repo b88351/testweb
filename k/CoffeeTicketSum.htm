@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<html>
+<style>
+.span{
+vertical-align: top;
+}
+</style>
+  <head>
+    <title>No Title</title>
+  </head>
+  <body>
+<p>
+  <button id="hide_TicketForm_button" style="display: true;">隱藏</button>
+  <button id="show_TicketForm_button" style="display: true;">顯示</button>
+</p>
+<p>
+  <iframe id="ticketForm" src="https://docs.google.com/forms/d/e/1FAIpQLScMMUAaS07K2YWIVEV1Ut8dDRp8AF15JGhQ0bTkKA9QhFsWZQ/viewform?embedded=true" width="700" height="1850" frameborder="0" marginheight="0" marginwidth="0">載入中…</iframe>
+</p>
+
+
+
+
+
+<p>
+  <button id="hide_TicketForm_button2" style="display: true;">隱藏2</button>
+  <button id="show_TicketForm_button2" style="display: true;">顯示2</button>
+</p>
+
+  <span class="span"><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdCOgCMjkXoAfqqExOnb1kgRDjB-xcqqb7vAA_12w5LJ9aQzw/viewform?embedded=true" width="640" height="1250" frameborder="0" marginheight="0" marginwidth="0">載入中…</iframe>  
+  </span>
+  
+  <span class="span">
+  <iframe width="1400" height="785" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQP9xzEmPWlUD8Wx3of8NRpcvO96f2X9WoB6Vqo9C_25soKW14yYvR-jGVhvXQJJwsp6nMFvVdhtWFr/pubhtml?widget=true&amp;headers=false"></iframe>
+  </span>
+
+
+    <pre id="content" style="white-space: pre-wrap;"></pre>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="module" src="module.js"></script>
+  
+	<script type="text/javascript">
+	  var hideTicketFormButton = document.getElementById('hide_TicketForm_button');
+	  var showTicketFormButton = document.getElementById('show_TicketForm_button');
+	  
+	  var TicketForm = document.getElementById('ticketForm');
+	
+	
+	  function appendPre(message) {
+        var pre = document.getElementById('content');
+        var textContent = document.createTextNode(message + '\n');
+        pre.appendChild(textContent);
+      }
+	  
+	  function init() {
+	  appendPre('init');
+		hideTicketFormButton.onclick = hideOrNotTicketForm;
+	  	showTicketFormButton.onclick = showOrNotTicketForm;
+	  }
+	  function hideOrNotTicketForm() {
+//		  appendPre('hide'+ JSON.stringify(showscheduleweekButton.display));
+		  appendPre('hide');
+		  TicketForm.style.display = 'none';
+		  showTicketFormButton.style.display = 'block';
+		  hideTicketFormButton.style.display = 'none';
+	  }
+	  function showOrNotTicketForm() {
+		appendPre('show');
+		  TicketForm.style.display = 'block';
+		  showTicketFormButton.style.display = 'none';
+		  hideTicketFormButton.style.display = 'block';
+	  }
+
+	  
+	  </script>
+	  <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};init()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()" charset = "UTF-8">
+    </script>
+</body>
+</html>
