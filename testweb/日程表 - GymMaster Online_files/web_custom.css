@@ -1,0 +1,23 @@
+/** Box size **/
+.alert[data-notify=container]:not(.alert-info) {
+    width: 95% !important;
+}
+
+/** image **/
+.square-box-pop-up {
+    height: 500px;
+    width: 20%;
+}
+
+/** textbax size **/
+.alert[data-notify=container] .popup-notification .pop_up_content {
+    width: 70%
+}
+
+/** font **/
+.alert[data-notify=container] .popup-notification .pop_up_content label {
+    font-size: 400%;
+}
+.alert[data-notify=container] .popup-notification .pop_up_content p {
+    font-size: 300%;
+}
