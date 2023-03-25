@@ -1,0 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap');
+.contents-container .glyphicons {
+	line-height: 0.7;
+}
+
+.contents-container .glyphicons:before {
+	padding: 5px 0 5px 0
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.row {
+	margin-right: 0;
+	margin-left: 0
+}
+
+.affix-sidebar li a {
+	padding: 10px 15px;
+	border-bottom: 0.5px #555 solid;
+	font-size: 14px;
+}
+
+@media (max-width: 992px) {
+	.affix-sidebar li a {
+		padding: 10.5px 15px;
+	}
+}
+
+.navbar .navbar-right>li>a {
+	padding: 10px 0px;
+	font-size: 13px
+}
+
+.navbar .navbar-brand {
+	margin-right: 16px;
+}
+
+.search-bar .memberAssignBox {
+	position: absolute;
+	top: 45px;
+	width: 300px;
+	z-index: 999;
+}
+
+.navbar .navbar-right .dropdown.userprofile {
+	background-color: transparent;
+}
+
+.navbar .navbar-right .user-profile-arrow {
+	padding-left: 8px !important;
+}
+
+.navbar .navbar-right .dropdown.userprofile .dropdown-toggle {
+	padding: 0px
+}
+.userdetails .name {
+	/* .25 rem */
+	padding-top: 4px;
+}
+.userdetails .company {
+	margin-top: -4px;
+}
+.img-profile {
+	margin-right: 8px;
+}
+
+
+#settings_menu.dropdown-menu li a {
+	font-size: 14px;
+}
+
+#settings_menu.dropdown-menu li a:focus {
+	color: #000 !important;
+}
+
+
+#settings_menu.dropdown-menu li:hover,
+.sub-menu li:hover {
+	background-color: #fff;
+}
+
+#settings_menu.dropdown-menu li:hover a,
+.sub-menu li:hover a {
+	color: #000 !important;
+	background-color: transparent !important;
+}
+
+#settings_menu.dropdown-menu li,
+.sub-menu>li {
+	display: block;
+}
+
+/* #wrap{display:inline-table} */
+
+.dropdown-menu-staff>li>a {
+	padding: 5px 25px;
+	font-weight: 400;
+	line-height: 1.5;
+}
+
+.navbar>li>a {
+	line-height: 1.5;
+}
+.navbar .navbar-right > li > a:hover,.navbar .navbar-right > li > a.active,.navbar .navbar-right .dropdown.open > a{ color:#357ab5 !important;}
+.navbar .navbar-right li > a:hover .border-circle-p5,.navbar .navbar-right li > a.active .border-circle-p5,.navbar .navbar-right .dropdown.open > a .border-circle-p5{border-color:#357ab5}
+.navbar .navbar-right #settings_menu {
+	right: -30px
+}
+
+.notify-count {
+	position: relative;
+	top: -10px;
+	right: -13px;
+	background-color: #dc3545 !important;
+	border-radius: 50rem !important;
+	display: inline-block;
+	padding: 4px 6.5px;
+	font-size: 9px;
+	font-weight: 700;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+}
+
+#navbutton {
+	color: rgba(255,255,255,.55);
+	border-color: rgba(255,255,255,.1);
+
+	font-size: 20px;
+	/* 0.25rem, 0.75rem */
+	padding: 4px 12px;
+	margin-top: 0;
+	margin-bottom: 0;
+	line-height: 1;
+}
+
+#navbutton.navbar-toggle:hover {
+	background-color: initial;
+}
+
+#navbutton.navbar-toggle:focus {
+	background-color: initial;
+	box-shadow: 0 0 0 00.25em;
+}
+
+/* BS5 port, and esbuild sadly loses it shit with `data-image` */
+#navbutton .icon-bar {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+
+	display: inline-block;
+	width: 1.5em;
+	height: 1.5em;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 100%;
+
+	background-color: initial;
+}
+
+.border-circle-p5 {
+	border: 1px solid #f0f0f0;
+	padding: 9px 10px;
+	border-radius: 100%;
+	margin-right: 5px;
+}
+
+@media (min-width: 768px) and (max-width: 779px),
+(min-width: 780px) and (max-width: 899px),
+(min-width: 1000px) and (max-width: 1199px) {
+	.affix-sidebar:not(.expanded)>li {
+		width: 52px;
+		transition: width 200ms;
+	}
+
+	.affix-sidebar:not(.expanded) .togglePOS,
+	.affix-sidebar:not(.expanded) .toggleReport {
+		left: 52px;
+	}
+
+	.affix-sidebar ul:not(.sub-menu-list) .sidebar-text {
+		animation-name: menu_text;
+		animation-duration: .8s;
+	}
+}
+
+.row-find-member .row-find-member-content .sort-box {
+	text-align: right;
+	padding-right: 15px;
+}
+
+@media (min-width: 768px) {
+	.navbar-collapse.collapse.in {
+		display: block;
+	}
+}
+
+@media (min-width: 992px) {
+	.navbar-collapse.collapse {
+		display: block;
+	}
+
+	.affix-sidebar>li>a {
+		height: 42px
+	}
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+    .sidebar-text{animation-name: menu_text;animation-duration: 250ms;}
+    @keyframes menu_text {
+        0% {display: none;opacity: 0;position: absolute;}
+        50% {position: absolute;}
+        51% {display: initial;opacity: 0;position: initial;}
+        100% {opacity: 100;}
+      }
+}
+@media (max-width: 1200px) {
+footer .client-id {
+	margin-bottom: 0px !important;
+	padding-left: 0px
+}
+}
+@media (max-width: 991px) {
+	#toggleReportSmall.collapse.in,
+	#togglePOSsmall.collapse.in {
+		display: block
+	}
+
+	.togglePOS,
+	.toggleReport {
+		display: none !important;
+	}
+
+	.affix-sidebar {
+		width: 100%;
+		display: block;
+	}
+
+	.affix-sidebar:not(.expanded)>li {
+		width: 100%;
+		transition: width 200ms;
+	}
+
+	.affix-sidebar .sidebar-text {
+		display: inline-block !important;
+	}
+
+	.navbar-toggle {
+		display: block;
+	}
+
+	.affix-sidebar .sideBar.userprofile img {
+		margin-right: 8px;
+		height: 37px;
+		display: inline-block;
+		/* border: 1px solid #B8AAAA; */
+	}
+
+	footer #language-selection {
+		margin-bottom: 0px !important
+	}
+}
+
+/* footer css */
+#footer-main {
+	background-color: #000;
+	padding: 80px 15px !important
+}
+
+#footer-company-info {
+	background-color: rgb(65 65 65);
+	padding-top: 15px !important;
+	padding-bottom: 10px !important;
+}
+
+#footer-company-info p {
+	color: #fff;
+}
+
+#footer-main h5 {
+	font-size: 20px;
+	margin-bottom: 20px
+}
+
+footer .footer-support {
+	margin-right: 7px;
+}
+
+#footer-main button,
+#footer-main .btn {
+	border-radius: 6px;
+	font-size: 12px;
+}
+
+#footer-main textarea {
+	font-size: 12px;
+	padding: 6px 11px;
+	margin-bottom: 15px;
+}

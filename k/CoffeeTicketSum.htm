@@ -10,18 +10,21 @@ vertical-align: top;
     <title>No Title</title>
   </head>
   <body>
+<div>
 <p>
   <button id="hide_TicketForm_button" style="display: true;">隱藏</button>
   <button id="show_TicketForm_button" style="display: true;">顯示</button>
+  <button id="test_button" style="display: true;">test</button>
+  
 </p>
 <p>
   <iframe id="ticketForm" src="https://docs.google.com/forms/d/e/1FAIpQLScMMUAaS07K2YWIVEV1Ut8dDRp8AF15JGhQ0bTkKA9QhFsWZQ/viewform?embedded=true" width="700" height="1850" frameborder="0" marginheight="0" marginwidth="0">載入中…</iframe>
 </p>
+</div
 
 
 
-
-
+<div>
 <p>
   <button id="hide_TicketForm_button2" style="display: true;">隱藏2</button>
   <button id="show_TicketForm_button2" style="display: true;">顯示2</button>
@@ -29,11 +32,13 @@ vertical-align: top;
 
   <span class="span"><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdCOgCMjkXoAfqqExOnb1kgRDjB-xcqqb7vAA_12w5LJ9aQzw/viewform?embedded=true" width="640" height="1250" frameborder="0" marginheight="0" marginwidth="0">載入中…</iframe>  
   </span>
-  
+</div>
+
+<div>
   <span class="span">
   <iframe width="1400" height="785" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQP9xzEmPWlUD8Wx3of8NRpcvO96f2X9WoB6Vqo9C_25soKW14yYvR-jGVhvXQJJwsp6nMFvVdhtWFr/pubhtml?widget=true&amp;headers=false"></iframe>
   </span>
-
+</div>
 
     <pre id="content" style="white-space: pre-wrap;"></pre>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -42,6 +47,7 @@ vertical-align: top;
 	<script type="text/javascript">
 	  var hideTicketFormButton = document.getElementById('hide_TicketForm_button');
 	  var showTicketFormButton = document.getElementById('show_TicketForm_button');
+	  var testButton = document.getElementById('test_button');
 	  
 	  var TicketForm = document.getElementById('ticketForm');
 	
@@ -56,6 +62,7 @@ vertical-align: top;
 	  appendPre('init');
 		hideTicketFormButton.onclick = hideOrNotTicketForm;
 	  	showTicketFormButton.onclick = showOrNotTicketForm;
+		testButton.onclick = testFunc;
 	  }
 	  function hideOrNotTicketForm() {
 //		  appendPre('hide'+ JSON.stringify(showscheduleweekButton.display));
@@ -70,7 +77,48 @@ vertical-align: top;
 		  showTicketFormButton.style.display = 'none';
 		  hideTicketFormButton.style.display = 'block';
 	  }
+	  function testFunc() {
+	  	  appendPre('111');
+		  
+		var spreadSheetId = '10RiLqbWVE-jgbVAouTh1IKft-NjQXo1fT_pS_aeJnPs';
+		var dataRange = '10月!A6';
+		var range   = Sheets.Spreadsheets.Values.get(spreadSheetId,dataRange);
+		var values  = range.values;
+		  	  	  appendPre(values);
+	  	  appendPre('222');
 
+	  var params = {
+        // The ID of the spreadsheet to retrieve data from.
+        spreadsheetId: '10RiLqbWVE-jgbVAouTh1IKft-NjQXo1fT_pS_aeJnPs',  // TODO: Update placeholder value.
+
+        // The A1 notation of the values to retrieve.
+        range: '10月!A6',  // TODO: Update placeholder value.
+
+        // How values should be represented in the output.
+        // The default render option is ValueRenderOption.FORMATTED_VALUE.
+        valueRenderOption: '',  // TODO: Update placeholder value.
+
+        // How dates, times, and durations should be represented in the output.
+        // This is ignored if value_render_option is
+        // FORMATTED_VALUE.
+        // The default dateTime render option is [DateTimeRenderOption.SERIAL_NUMBER].
+        dateTimeRenderOption: '',  // TODO: Update placeholder value.
+      };
+	  	  appendPre(JSON.stringify(params));
+	  var request = gapi.client.sheets.spreadsheets.values.get(params);
+	  appendPre(JSON.stringify(response));
+      request.then(function(response) {
+        // TODO: Change code below to process the `response` object:
+//        console.log(response.result);
+						appendPre(JSON.stringify(response.result));
+      }, function(reason) {
+	  appendPre('error: ' + reason.result.error.message);
+        console.error('error: ' + reason.result.error.message);
+      });
+	  
+				appendPre('show');
+
+	  }
 	  
 	  </script>
 	  <script async defer src="https://apis.google.com/js/api.js"
