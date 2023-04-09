@@ -4,7 +4,7 @@
 <title>日程表 -  GymMaster Online </title>
 
 
-	<script src="./日程表 - GymMaster Online_files/23f68e21944f498f6587867d4055894c.js.下載" type="text/javascript" async=""></script><script src="./日程表 - GymMaster Online_files/polyfill.min.js.下載" defer=""></script>
+	<script src="./日程表 - GymMaster Online_files/polyfill.min.js.下載" defer=""></script>
 	<script src="./日程表 - GymMaster Online_files/replace-children-polyfill.js.下載" defer=""></script>
 
 
@@ -31,48 +31,12 @@
 	<!-- js files -->
 	<!-- don't make this async, or the below will fail -->
 	<script src="./日程表 - GymMaster Online_files/jquery.validate.min.js.下載"></script>
-	<script>
-		$.validator.setDefaults({
-			normalizer: function(value) {
-				return $.trim(value);
-			},
-			highlight: function(element) {
-				$(element).closest('.form-group').addClass('has-error');
-			},
-			unhighlight: function(element) {
-				$(element).closest('.form-group').removeClass('has-error');
-			},
-			errorPlacement: function(error, $elem) {
-				if ($elem.parent().hasClass('input-group')) {
-					var group = $elem.parent();
-					error.insertAfter(group);
-				} else {
-					error.insertAfter($elem);
-				}
-			},
-			focusInvalid: false,
-			invalidHandler: function(form, validator) {
-				if (!validator.numberOfInvalids())
-					return;
-				do_the_scroll_thing($(validator.errorList[0].element));
-			},
-			messages: {
-				email: {
-					email: "請輸入有效的電子郵件。"
-				}
-			}
-		});
-	</script>
 
 	<link rel="stylesheet" type="text/css" href="./日程表 - GymMaster Online_files/bootstrap-datetimepicker.min.css">
 	<link rel="stylesheet" type="text/css" href="./日程表 - GymMaster Online_files/jquery.timepicker.css">
 	<link rel="stylesheet" type="text/css" href="./日程表 - GymMaster Online_files/fuzzy-dropdown.css">
 	<link href="./日程表 - GymMaster Online_files/open-iconic-bootstrap.css" rel="stylesheet">
 
-
-	<!--Crazy egg snippet Start-->
-	<script type="text/javascript" src="./日程表 - GymMaster Online_files/6298.js.下載" async="async"></script>
-	<!-- Crazy egg snippet End--> 
 </head>
 <body>
 	<div id="wrap" class="">
@@ -428,7 +392,7 @@
 
 										<a type="button" class="btn btn-danger none" id="uncheckin_btn">撤銷簽到</a>
 										<div id="disabled_reason" class="tooltip-wrapper" title="Booking is too far away to checkin">
-											<a type="button" class="btn btn-success btn-checkin disabled" id="checkin_btn">簽到</a>
+											<a type="button" class="btn btn-success btn-checkin" id="checkin_btn">簽到</a>
 										</div>
 
 
@@ -1157,31 +1121,9 @@ String.prototype.format = function (){
 	config.LUXON2DP_FMTSTR = 'yyyy-MM-dd';
 	config.LUXON2UI_FMTSTR = 'yyyy年 M月 d日';
 })();
-</script>
-
-
-  <script src="./日程表 - GymMaster Online_files/visitor_error_b-0-DKMRVIY4.js.下載" type="module"></script>
-
-<script src="./日程表 - GymMaster Online_files/visitor_error_b-0-D6FIULPK.js.下載" type="module"></script>
-
-  <script type="module">
-    if (gm.l10n.roots.size === 0) {
-      gm.l10n.connectRoot(document.documentElement);
-      gm.l10n.translateRoots();
-    }
-  </script>
-
 
 
   
-  <script src="./日程表 - GymMaster Online_files/base-77Z6RO74.js.下載" type="module"></script>
-
-
-
-<script>
-	var __gm = window.gm;
-</script>
-
 <script>
 	// Add translations for datepickers
 	$.fn.datepicker.dates['en'] = {
@@ -1218,133 +1160,12 @@ $(function() {
   </script>
 <script src="./日程表 - GymMaster Online_files/moment.min.js.下載"></script>
 <script src="./日程表 - GymMaster Online_files/bootstrap-datetimepicker.min.js.下載"></script>
-<script src="./日程表 - GymMaster Online_files/gm.timepicker.min.js.下載"></script>
 <script async="" src="./日程表 - GymMaster Online_files/jSignature.min.js.下載"></script>
 <script src="./日程表 - GymMaster Online_files/fuzzy-dropdown.min.js.下載"></script>
 
-  <script src="./日程表 - GymMaster Online_files/reset_booking_c-0-UMWXZPSG.js.下載" type="module"></script>
-
-<script src="./日程表 - GymMaster Online_files/reset_booking_c-0-74BA4LTY.js.下載" type="module"></script>
-
-  <script type="module">
-    if (gm.l10n.roots.size === 0) {
-      gm.l10n.connectRoot(document.documentElement);
-      gm.l10n.translateRoots();
-    }
-  </script>
-
-
-
-  
-  <script src="./日程表 - GymMaster Online_files/booking_personal-TURTZF44.js.下載" type="module"></script>
-
-
 <script>
-function total_minutes_from_time(time) {
-	var regExp = /([^)]+)\:([^)]+)\:([^)]+)/;
-	var matches = regExp.exec(time);
-	return parseInt(matches[1],10) * 60 + parseInt(matches[2],10)
-}
-
-function mod(num, mod) {
-	var remain = num % mod;
-	return Math.floor(remain >= 0 ? remain : remain + mod);
-}
 
 $(document).ready(function() {
-	gm_datePickerInput('#datefrom', '#datefrom', {
-		date: "2023-03-16"
-	});
-	if (moment("2023-03-16") > moment()) {
-		$('.btn-checkin').addClass('disabled');
-		$('#disabled_reason').prop('innerHTML', 'Booking is too far away to checkin')
-	}
-
-	// Mega jank in chrome occasionally results in the `selected` property not being picked up properly when navigating back to this page.
-	if ($('#resourceselect').val() == null && '103' !== '') {
-		console.warn('Could not find selected booking resource from DOM, guessing');
-		$('#resourceselect').val('103');
-	}
-
-	populate_service();
-
-	var time_offset = $('#resourceselect').find(":selected").data('time_offset');
-	if (!time_offset) {
-		time_offset = "0:00:00";
-	}
-	var time_offset_minutes = total_minutes_from_time(time_offset);
-	var period = total_minutes_from_time($('#resourceselect').find(":selected").data('period'));
-	if (!period) {
-		period = "0:15:00";
-	}
-	var service_length = total_minutes_from_time("1:00:00");
-	var max_time_from = generateTime(1440 - (service_length + mod(-time_offset_minutes, period)));
-	$('#timefrom').timepicker({
-		'className': 'form-control',
-		'show2400': true,
-		'showDuration': false,
-		'timeFormat': 'g:i a',
-		'minTime': time_offset,
-		'maxTime': max_time_from,
-		'step': period,
-		'maintainSteps': false,
-		'useSelect': true,
-		'forceRoundTime': true
-	});
-	$('#timefrom').timepicker('setTime', '11:00:00');
-	if (!$('#timefrom').val()) showInvalidTime('#timefrom');
-	
-	var start_time_minutes = total_minutes_from_time('11:00:00');
-var step_size = total_minutes_from_time('1:00:00');
-	var disable_time_range = [['11:00:00', generateTime(start_time_minutes + step_size - 1)]]
-	var max_time_to = generateTime(1440 - mod(-time_offset_minutes, period));
-	$('#timeto').timepicker({
-		'className': 'form-control',
-		'show2400': true,
-		'showDuration': true,
-		'timeFormat': 'g:i a',
-		'minTime': '11:00:00',
-		'maxTime': max_time_to,
-		'step': step_size,
-		'maintainSteps': true,
-		'useSelect': true,
-		'forceRoundTime': true,
-		'disableTimeRanges': disable_time_range
-	});
-	$('#timeto').timepicker('setTime', '12:00:00');
-	if (!$('#timeto').val()) showInvalidTime('#timeto');
-
-
-	$('.ui-timepicker-select').attr("disabled", true);
-
-
-
-	if ('231' != '-1' && 'False' == 'False')
-	{
-		if ('True' == 'True') {
-			$('.btn-checkin').addClass('disabled');
-			$('#disabled_reason').attr('title', 'Booking is too far away to checkin');
-		}
-		if ('False' == 'True') {
-			$('.btn-checkin').addClass('disabled');
-			$('#disabled_reason').attr('title', 'Booking has already occurred');
-		}
-	}
-
-
-	
-	$('#bookingform').validate();
-
-	$('#service').on('change', service_change);
-	$('#datefrom').on('change', date_change);
-	$('#timefrom').on('change', time_from_change);
-	$('#timeto').on('change', time_to_change);
-	$('#resourceselect').on('change', resource_change);
-	$('#roomselect').on('change', room_equipment_change);
-	$('#equipmentselect').on('change', room_equipment_change);
-
-	$('#paynow_btn').on('click', pay_now);
-
 
 	$('#confirm_btn').on('click', confirm_booking);
 
@@ -1358,102 +1179,9 @@ var step_size = total_minutes_from_time('1:00:00');
 		}
 	);
 $('#checkin_btn').on('click', dual_authenticate_checkin);
-
-	$('#back').on('click', back);
-	$('#save_btn').on('click', save);
-
-	$('#printreminder').on('click', print_reminder);
-	$('#confirmback').on('click', back);
-	$('#notif-ok-btn').on('click', function() {
-		$('#notificationBox').addClass('hide');
-	});
-
+alert("Test");
 	// Handle cancellation modal cancel confirmation
-	var cancel_mutex = true;
-	$('#cancel-box #cancel-yes-btn').on('click', function() {
-		if (!cancel_mutex) return;
 
-		cancel_mutex = false;
-		var dest_url = '';
-		var dest_data = {
-			'cancel_reason': $('#cancel-reason').val()
-		};
-
-		if ($('#type-cancel').is(':checked')) {
-			if ($('#charge-no-charge').is(':checked')) {
-				dest_url = '/booking/cancelwithoutcharge/112156950';
-				dest_url += $('#cancel-all').is(':checked') ? '/1' : '/0';
-			}
-			else if ($('#charge-booking-fee').is(':checked')) {
-				dest_url = '/booking/cancelchargingfullprice/112156950';
-			}
-			else if ($('#charge-custom-fee').is(':checked')) {
-				dest_url = '/booking/cancelchargingfee/112156950/' + $('#cancellation-fee').val();
-			}
-		}
-		else if ($('#type-delete').is(':checked')) {
-			dest_url = '/booking/delete/112156950';
-			dest_url += $('#cancel-all').is(':checked') ? '/1' : '/0';
-		}
-		else if ($('#type-no-show').is(':checked')) {
-			dest_url = '/booking/noshow/112156950';
-			dest_url += $('#charge-no-charge').is(':checked') ? '/0' : '/1';
-
-			if ($('#charge-custom-fee').is(':checked')) {
-				dest_data['fee'] = $('#cancellation-fee').val();
-			}
-		}
-		else {
-			return;
-		}
-
-		gm.fetch.post(
-			dest_url,
-			{
-				data: { 'cancel_reason':$('#cancel-reason').val() },
-				errorRenderer: notificationError
-			}
-		).then(function () {
-			back();
-		}).finally(function() {
-			$('#cancel-box').addClass('hide');
-			cancel_mutex = true;
-		});
-	});
-
-	$('#no_show_btn').on(
-		'click',
-		function() {
-
-			var repeating = false;;
-			open_cancellation_modal(repeating);
-		}
-	);
-
-	$('#undo_no_show_btn').on('click', function() {
-		gm.fetch.post(
-			'/booking/undo_classnoshow/112156950',
-			{ errorRenderer: notificationError}
-		).then(function() {
-			back();
-		});
-	});
-
-	$('#savrep-yes-btn').on('click', function() {
-		savebookingupdate($('safeRepeatBox').data('paynow'), true);
-	});
-	$('#savrep-no-btn').on('click', function() {
-		savebookingupdate($('safeRepeatBox').data('paynow'), false);
-	});
-
-	if (__gm.config.DBNAME == 'g_routinefitness' || __gm.config.DBNAME == 'g_routinetestdb') {
-		if (__gm.config.hasRole('schedule_trainer')) {
-			$('#save_btn').addClass('none');
-			$('#cancel_btn').addClass('none');
-			$('#paynow_btn').addClass('none');
-			$('#confirm_btn').addClass('none');
-		}
-	}
 });
 
 function get_step_size() {
@@ -1641,6 +1369,7 @@ $('#add-signature-checkin-modal').on('shown.bs.modal', function() {
 
 
 function dual_authenticate_checkin() {
+alert("Test");
 	$('#dual-authentication-modal').modal('show');
 
 	var ws = new WebSocket("wss://"+location.host+"/ws/doormsg");
