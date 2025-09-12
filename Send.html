@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Apps Script 郵件寄送工具</title>
+    <style>
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid #ddd;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+            font-size: 1.1em;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+        .input-group input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+        button:active {
+            background-color: #3e8e41;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>郵件寄送工具</h1>
+    <div class="input-group">
+        <label for="nameInput">分頁名稱 (姓名)：</label>
+        <input type="text" id="nameInput" placeholder="例如：王小明">
+    </div>
+    <div class="input-group">
+        <label for="monthInput">月份：</label>
+        <input type="number" id="monthInput" placeholder="例如：8" min="1" max="12">
+    </div>
+    <button onclick="sendEmail()">送出</button>
+</div>
+
+<script>
+    function sendEmail() {
+        const name = document.getElementById('nameInput').value;
+        const month = document.getElementById('monthInput').value;
+        const baseURL = "https://script.google.com/macros/s/AKfycbye4DRDffEw-LDhsQak57hchtqOGzzKyFJZPXxxyemS5jKFT6ktjhA_YXbkaWNG9-KD/exec";
+
+        // 檢查輸入是否為空
+        if (!name || !month) {
+            alert("分頁名稱和月份都不能為空，請輸入完整。");
+            return;
+        }
+
+        // 檢查月份是否為有效數字
+        const monthInt = parseInt(month, 10);
+        if (isNaN(monthInt) || monthInt < 1 || monthInt > 12) {
+            alert("請輸入有效的月份數字（1 到 12）。");
+            return;
+        }
+
+        // 使用 encodeURIComponent 確保參數值在 URL 中正確編碼
+        const url = `${baseURL}?name=${encodeURIComponent(name)}&month=${encodeURIComponent(month)}`;
+        
+        // 導向到生成的 URL
+        window.location.href = url;
+    }
+</script>
+
+</body>
+</html>
